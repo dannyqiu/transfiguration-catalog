@@ -13,8 +13,16 @@ class BorrowForm(webapp2.RequestHandler):
 
     def post(self):
         contact = self.request.get('contact')
-        borrowed_barcodes = self.request.get('barcode')
+        borrowed_barcodes = self.request.get('barcodes')
         borrowed_barcodes = borrowed_barcodes.split('\r\n')
+        borrowed_barcodes = filter(lambda b: b != "", borrowed_barcodes) # Take out all empty barcodes
+
+        # Temporary Solution
+        borrowed_tags = self.request.get('stickers')
+        borrowed_tags = borrowed_tags.split('\r\n')
+        books = bookLists.get_books()
+        original = books.cell(4500, 1).value
+        books.update_cell(4500, 1, original + "\n" + contact + ": " + str(borrowed_tags))
 
         if self.request.get('book_type') == "Big Book":
             barcodes = bookLists.get_big_books_barcodes()
@@ -31,7 +39,6 @@ class BorrowForm(webapp2.RequestHandler):
                 original_borrower = books.cell(book_row + 1, 7).value
                 books.update_cell(book_row + 1, 7, original_borrower + "\n" + str(datetime.datetime.now()) + " - " + contact)
                 book_infos.append(bookLists.get_big_book_info(book_row))
-
         else:
             barcodes = bookLists.get_books_barcodes()
             book_rows = []
