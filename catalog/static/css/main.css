@@ -1,0 +1,9 @@
+body {
+    font-family: "Open Sans", Arial;
+}
+
+#transfiguration-title {
+    line-height: 1.3;
+    text-align: center;
+    color: #B61939;
+}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+<h4>Borrowed books for: <small>{{contact}}</small></h4>
+{% for book in books %}
+<table class="table table-striped table-hover">
+    <tr>
+        <td>Barcode</td><td>{{book[0]}}</td>
+    </tr>
+    <tr>
+        <td>Title</td><td>{{book[1]}}</td>
+    </tr>
+    <tr>
+        <td>Author</td><td>{{book[2]}}</td>
+    </tr>
+    <tr>
+        <td>Quantity</td><td>{{book[3]}}</td>
+    </tr>
+    <tr>
+        <td>Sticker Tag</td><td>{{book[4]}}</td>
+    </tr>
+</table>
+{% endfor %}
+<h4 class="text-danger">These barcodes failed to process:</h4>
+{% for error in errors %}
+{{error}}<br>
+{% endfor %}
+{% endblock %}

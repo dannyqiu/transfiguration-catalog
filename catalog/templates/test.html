@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="col-md-6">
+    <ol>
+    {% for barcode in barcodes %}
+        <li>{{ barcode }}</li>
+    {% endfor %}
+    </ol>
+</div>
+<div class="col-md-6">
+    <ol>
+    {% for barcode in big_book_barcodes %}
+        <li>{{ barcode }}</li>
+    {% endfor %}
+    </ol>
+</div>
+{% endblock %}

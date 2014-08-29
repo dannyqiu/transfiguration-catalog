@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="col-md-6">
+    <form role="form" action="/borrow" method="post">
+        <div class="form-group">
+            <label for="contact">Contact Information</label>
+            <input type="text" class="form-control" id="contact" name="contact" placeholder="Put your name and email">
+        </div>
+        <div class="form-group">
+            <label for="barcode">Barcode Number(s)</label>
+            <small>Go to the next line after each barcode number</small>
+            <textarea class="form-control" id="barcode" name="barcode" placeholder="Scan/Enter the Barcode(s)" style="height: 200px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Borrow!</button>
+    </form>
+</div>
+{% endblock %}
