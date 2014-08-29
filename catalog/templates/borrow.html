@@ -7,6 +7,20 @@
             <input type="text" class="form-control" id="contact" name="contact" placeholder="Put your name and email">
         </div>
         <div class="form-group">
+            <label for="book_type">Book Type</label>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="book_type" id="regular-book" value="Regular Book" checked>
+                    Regular Book
+                </label>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="book_type" id="big-book" value="Big Book">
+                    Big Book
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="barcode">Barcode Number(s)</label>
             <small>Go to the next line after each barcode number</small>
             <textarea class="form-control" id="barcode" name="barcode" placeholder="Scan/Enter the Barcode(s)" style="height: 200px;"></textarea>
