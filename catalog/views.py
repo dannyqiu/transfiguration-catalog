@@ -1,53 +1,13 @@
 import os, webapp2, jinja2
 from functions import *
-
-JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
-    extensions=['jinja2.ext.autoescape'])
+from catalog import JINJA_ENVIRONMENT
+from search import SearchForm
 
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render({}))
-
-class SearchForm(webapp2.RequestHandler):
-
-    def get(self):
-        template = JINJA_ENVIRONMENT.get_template('search.html')
-        self.response.write(template.render({}))
-
-    def post(self):
-        barcode = self.request.get('barcode')
-        tag = self.request.get('sticker')
-        if barcode != "":
-            book_row = get_books_barcodes().index(barcode) + 1
-        elif tag != "":
-            stickers = get_books_stickers()
-            i = 0
-            while i < len(stickers):
-                if stickers[i] != None:
-                    split_stickers_by_comma = stickers[i].split(',')
-                    for sticker in split_stickers_by_comma:
-                        if tag == sticker:
-                            book_row = i + 1
-                i += 1
-        else:
-            self.response.write("Nothing to search for!")
-            return
-
-        book_info = get_book_info(book_row)
-
-        template_values = {
-            'barcode': book_info[0],
-            'title': book_info[1],
-            'author': book_info[2],
-            'quantity': book_info[3],
-            'sticker': book_info[4],
-        }
-
-        template = JINJA_ENVIRONMENT.get_template('search_completed.html')
-        self.response.write(template.render(template_values))
 
 class BorrowForm(webapp2.RequestHandler):
 

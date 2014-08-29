@@ -1,48 +1,53 @@
-from catalog import *
+from time import time
+from catalog import email, password
 import gspread
 
-def login():
-    gc = gspread.login(email, password)
-    spreadsheet = gc.open_by_key('1UCIE9Iy9xOjLQXSGON_1R40QldjjtRTsE5vGotZ0_vw')
-    return spreadsheet
+class BookLists:
 
-def get_books_barcodes():
-    sheet = login().worksheet("Book List")
-    barcodes = sheet.col_values(1)
-    return barcodes
+    def __init__(self):
+        gc = gspread.login(email, password)
+        spreadsheet = gc.open_by_key('1UCIE9Iy9xOjLQXSGON_1R40QldjjtRTsE5vGotZ0_vw')
+        global books
+        global books_values
+        books = spreadsheet.worksheet("Book List")
+        books_values = books.get_all_values()
+        global big_books
+        global big_books_values
+        big_books = spreadsheet.worksheet("Big Book List")
+        big_books_values = big_books.get_all_values()
 
-def get_books_stickers():
-    sheet = login().worksheet("Book List")
-    stickers = sheet.col_values(5)
-    return stickers
+    def get_books(self):
+        return books
 
-def get_book_info(book_row):
-    sheet = login().worksheet("Book List")
-    information = sheet.row_values(book_row)
-    return information
+    def get_books_barcodes(self):
+        barcodes = []
+        for row in books_values:
+            barcodes.append(row[0])
+        return barcodes
 
-def get_big_books_barcodes():
-    sheet = login().worksheet("Big Book List")
-    barcodes = sheet.col_values(1)
-    return barcodes
+    def get_books_stickers(self):
+        stickers = []
+        for row in books_values:
+            stickers.append(row[4])
+        return stickers
 
-def get_big_books_stickers():
-    sheet = login().worksheet("Big Book List")
-    stickers = sheet.col_values(5)
-    return stickers
+    def get_book_info(self, book_row):
+        return books_values[book_row]
 
-def get_big_book_info(book_row):
-    sheet = login().worksheet("Big Book List")
-    information = sheet.row_values(book_row)
-    return information
+    def get_big_books(self):
+        return big_books
 
-def get_books():
-    return login().worksheet("Book List")
+    def get_big_books_barcodes(self):
+        barcodes = []
+        for row in big_books_values:
+            barcodes.append(row[0])
+        return barcodes
 
-def get_books_spreadsheet():
-    sheet = login().worksheet("Book List")
-    return sheet.get_all_values()
+    def get_big_books_stickers(self):
+        stickers = []
+        for row in big_books_values:
+            stickers.append(row[4])
+        return stickers
 
-def get_big_books_spreadsheet():
-    sheet = login().worksheet("Big Book List")
-    return sheet.get_all_values()
+    def get_big_book_info(self, book_row):
+        return big_books_values[book_row]
