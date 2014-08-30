@@ -25,5 +25,8 @@ handlers:
 - url: /js
   static_dir: catalog/static/js
   expiration: 7d
+- url: /fonts
+  static_dir: catalog/static/fonts
+  expiration: 7d
 - url: /.*
   script: catalog.views.application
