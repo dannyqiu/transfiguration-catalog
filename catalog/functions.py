@@ -19,6 +19,9 @@ class BookLists:
     def get_books(self):
         return books
 
+    def get_books_values(self):
+        return books_values
+
     def get_books_barcodes(self):
         barcodes = []
         for row in books_values:
@@ -37,6 +40,9 @@ class BookLists:
     def get_big_books(self):
         return big_books
 
+    def get_big_books_values(self):
+        return big_books_values
+
     def get_big_books_barcodes(self):
         barcodes = []
         for row in big_books_values:
@@ -51,3 +57,9 @@ class BookLists:
 
     def get_big_book_info(self, book_row):
         return big_books_values[book_row]
+
+    def update(self):
+        global books_values
+        books_values = books.get_all_values()
+        global big_books_balues
+        big_books_values = big_books.get_all_values()
