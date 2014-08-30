@@ -8,9 +8,9 @@ class TestPage(webapp2.RequestHandler):
     bookLists = BookLists()
 
     def get(self):
-        books = bookLists.get_books_values()[10:]
+        books = bookLists.get_books_values()
         books = [[books[r][c] for c in range(0,5)] for r in range(0,len(books))]
-        big_books = bookLists.get_big_books_values()[1:]
+        big_books = bookLists.get_big_books_values()
         big_books = [[big_books[r][c] for c in range(0,5)] for r in range(0,len(big_books))]
 
         template_values = {

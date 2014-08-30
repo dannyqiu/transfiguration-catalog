@@ -8,13 +8,10 @@ class BookLists:
         gc = gspread.login(email, password)
         spreadsheet = gc.open_by_key('1UCIE9Iy9xOjLQXSGON_1R40QldjjtRTsE5vGotZ0_vw')
         global books
-        global books_values
         books = spreadsheet.worksheet("Book List")
-        books_values = books.get_all_values()
         global big_books
-        global big_books_values
         big_books = spreadsheet.worksheet("Big Book List")
-        big_books_values = big_books.get_all_values()
+        self.update()
 
     def get_books(self):
         return books
@@ -27,6 +24,12 @@ class BookLists:
         for row in books_values:
             barcodes.append(row[0])
         return barcodes
+
+    def get_books_titles(self):
+        titles = []
+        for row in books_values:
+            titles.append(row[1])
+        return titles
 
     def get_books_stickers(self):
         stickers = []
@@ -49,6 +52,12 @@ class BookLists:
             barcodes.append(row[0])
         return barcodes
 
+    def get_big_books_titles(self):
+        titles = []
+        for row in big_books_values:
+            titles.append(row[1])
+        return titles
+
     def get_big_books_stickers(self):
         stickers = []
         for row in big_books_values:
@@ -60,6 +69,6 @@ class BookLists:
 
     def update(self):
         global books_values
-        books_values = books.get_all_values()
+        books_values = books.get_all_values()[10:]
         global big_books_balues
-        big_books_values = big_books.get_all_values()
+        big_books_values = big_books.get_all_values()[1:]
