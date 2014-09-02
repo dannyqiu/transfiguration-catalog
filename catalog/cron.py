@@ -1,10 +1,7 @@
 import os, webapp2, jinja2
-from functions import BookLists
+from catalog import JINJA_ENVIRONMENT, bookLists
 
 class UpdateBookLists(webapp2.RequestHandler):
-
-    global bookLists
-    bookLists = BookLists()
 
     def get(self):
         bookLists.update()

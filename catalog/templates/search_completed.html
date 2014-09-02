@@ -1,22 +1,22 @@
 {% extends "layout.html" %}
 {% block body %}
-{% for book in books %}
+<h4>Your search results:</h4>
 <table class="table table-striped table-hover">
     <tr>
-        <td class="col-md-2">Barcode</td><td>{{ book[0] }}</td>
+        <th>Barcode Number</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Quantity</th>
+        <th class="col-md-3">Library Sticker Tag</th>
     </tr>
+{% for book in books %}
     <tr>
-        <td class="col-md-2">Title</td><td>{{ book[1] }}</td>
+        <td>{{ book[0] }}</td>
+        <td>{{ book[1] }}</td>
+        <td>{{ book[2] }}</td>
+        <td>{{ book[3] }}</td>
+        <td>{{ book[4] }}</td>
     </tr>
-    <tr>
-        <td class="col-md-2">Author</td><td>{{ book[2] }}</td>
-    </tr>
-    <tr>
-        <td class="col-md-2">Quantity</td><td>{{ book[3] }}</td>
-    </tr>
-    <tr>
-        <td class="col-md-2">Sticker Tag</td><td>{{ book[4] }}</td>
-    </tr>
-</table>
 {% endfor %}
+</table>
 {% endblock %}

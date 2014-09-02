@@ -1,4 +1,4 @@
 .DS_Store
-catalog/__init__.py
+catalog/credentials.py
 *.pyc
 *.swp

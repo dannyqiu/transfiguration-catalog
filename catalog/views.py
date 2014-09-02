@@ -1,7 +1,6 @@
 import os, webapp2, jinja2
-from functions import BookLists
 from cron import *
-from catalog import JINJA_ENVIRONMENT
+from catalog import JINJA_ENVIRONMENT, bookLists
 from search import SearchForm
 from borrow import BorrowForm
 from test import TestPage

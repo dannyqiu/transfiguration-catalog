@@ -1,11 +1,7 @@
 import os, webapp2, jinja2
-from catalog import JINJA_ENVIRONMENT
-from functions import BookLists
+from catalog import JINJA_ENVIRONMENT, bookLists
 
 class TestPage(webapp2.RequestHandler):
-
-    global bookLists
-    bookLists = BookLists()
 
     def get(self):
         books = bookLists.get_books_values()
