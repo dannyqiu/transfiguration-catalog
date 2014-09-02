@@ -75,14 +75,3 @@ class BookLists:
 
     def get_big_book_info(self, book_row):
         return big_books_values[book_row]
-
-    def find_book_barcode(self, find_barcode):
-        barcodes = bookLists.get_books_barcodes()
-        i = 0
-        while i < len(barcodes):
-            if barcodes[i] != None:
-                split_barcodes_by_comma = barcodes[i].replace(" ", "").split(',')
-                for barcode in split_barcodes_by_comma:
-                    if find_barcode == barcode:
-                        return
-            i += 1

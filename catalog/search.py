@@ -10,30 +10,38 @@ class SearchForm(webapp2.RequestHandler):
     def post(self):
         title = self.request.get('title')
         barcode = self.request.get('barcode')
-        tag = self.request.get('sticker')
+        sticker = self.request.get('sticker')
         book_rows = []
         if title != "":
             book_titles = bookLists.get_books_titles()
             i = 0
             while i < len(book_titles):
-                if title in book_titles[i]:
+                if title.lower() in book_titles[i].lower():
                     book_rows.append(i)
                 i += 1
+            search_query = title
         elif barcode != "":
-            try:
-                book_rows.append(bookLists.get_books_barcodes().index(barcode))
-            except:
-                pass
-        elif tag != "":
+            barcodes = bookLists.get_books_barcodes()
+            i = 0
+            while i < len(stickers):
+                if barcodes[i] != None:
+                    split_barcodes_by_comma = barcodes[i].replace(" ", "").split(',')
+                    for split_barcode in split_barcodes_by_comma:
+                        if split_barcode == barcode:
+                            book_rows.append(i)
+                i += 1
+            search_query = barcode
+        elif sticker != "":
             stickers = bookLists.get_books_stickers()
             i = 0
             while i < len(stickers):
                 if stickers[i] != None:
-                    split_stickers_by_comma = stickers[i].split(',')
-                    for sticker in split_stickers_by_comma:
-                        if tag == sticker:
+                    split_stickers_by_comma = stickers[i].replace(" ", "").split(',')
+                    for split_sticker in split_stickers_by_comma:
+                        if split_sticker.lower() == sticker.lower():
                             book_rows.append(i)
                 i += 1
+            search_query = sticker
         else:
             template_values = {
                 'error_message': "Nothing to search for!"
@@ -47,6 +55,7 @@ class SearchForm(webapp2.RequestHandler):
             book_infos.append(bookLists.get_book_info(book_row))
         if len(book_infos) > 0:
             template_values = {
+                'search_query': search_query,
                 'books': book_infos
             }
             template = JINJA_ENVIRONMENT.get_template('search_completed.html')
@@ -55,8 +64,8 @@ class SearchForm(webapp2.RequestHandler):
                 error_message = "Title of <strong>" + title + "</strong> could not be found!"
             elif barcode != "":
                 error_message = "Barcode of <strong>" + barcode + "</strong> could not be found!"
-            elif tag != "":
-                error_message = "Sticker Tag of <strong>" + tag + "</strong> could not be found!"
+            elif sticker != "":
+                error_message = "Sticker Tag of <strong>" + sticker + "</strong> could not be found!"
             template_values = {
                 'error_message': error_message
             }
