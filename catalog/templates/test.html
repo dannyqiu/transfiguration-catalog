@@ -1,23 +1,25 @@
 {% extends "layout.html" %}
 {% block body %}
 <h3 id="books">Books<small class="pull-right"><a href="#big-books">Big Books <span class="glyphicon glyphicon-arrow-down"></span></a></small></h3>
-<table class="table table-condensed table-striped table-hover table-responsive">
-    <tr>
-        <th>Barcode Number</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Quantity</th>
-        <th class="col-md-3">Library Sticker Tag</th>
-        <th>Copies Borrowed</th>
-    </tr>
-    {% for book_row in books %}
-    <tr>
-        {% for book_column in book_row %}
-        <td>{{ book_column }}</td>
+<div class="table-responsive">
+    <table class="table table-condensed table-striped table-hover">
+        <tr>
+            <th>Barcode Number</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Quantity</th>
+            <th class="col-md-3">Library Sticker Tag</th>
+            <th>Copies Borrowed</th>
+        </tr>
+        {% for book_row in books %}
+        <tr>
+            {% for book_column in book_row %}
+            <td>{{ book_column }}</td>
+            {% endfor %}
+        </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+    </table>
+</div>
 
 <h3 id="big-books">Big Books<small class="pull-right"><a href="#books">Books <span class="glyphicon glyphicon-arrow-up"></span></a></small></h3>
 <table class="table table-condensed table-striped table-hover table-responsive">
