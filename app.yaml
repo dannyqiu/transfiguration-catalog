@@ -16,6 +16,10 @@ libraries:
   version: latest
 
 handlers:
+- url: /favicon\.ico
+  static_files: catalog/static/favicon.ico
+  upload: catalog/static/favicon\.ico
+  expiration: 30d
 - url: /images
   static_dir: catalog/static/images
   expiration: 14d
