@@ -6,7 +6,5 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'])
 
-os.environ['TZ'] = TIMEZONE
-
 global bookLists
 bookLists = BookLists()

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<form role="form" action="/borrow" method="post">
+<form role="form" action="/return" method="post">
     <div class="form-group">
         <label for="book_type">Book Type</label>
         <div class="radio">
@@ -25,6 +25,6 @@
         <small>Go to the next line after each sticker tag</small>
         <textarea class="form-control" id="stickers" name="stickers" placeholder="Enter the Sticker Tag(s)" style="height: 200px;"></textarea>
     </div>
-    <button type="submit" class="btn btn-default">Borrow!</button>
+    <button type="submit" class="btn btn-default">Return!</button>
 </form>
 {% endblock %}

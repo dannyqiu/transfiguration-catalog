@@ -4,10 +4,10 @@ from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
 
 from google.appengine.api import users
 
-class BorrowForm(webapp2.RequestHandler):
+class ReturnForm(webapp2.RequestHandler):
 
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('borrow.html')
+        template = JINJA_ENVIRONMENT.get_template('return.html')
         self.response.write(template.render({}))
 
     def post(self):
@@ -55,9 +55,20 @@ class BorrowForm(webapp2.RequestHandler):
                     error_stickers.append(borrowed_sticker)
             books = bookLists.get_big_books()
             for book_row in book_rows:
-                original_borrower = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
-                books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
-                book_infos.append(bookLists.get_big_book_info(book_row))
+                original_borrowers = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
+                borrowers = original_borrowers.split("\n")
+                i = 0
+                while i < len(borrowers):
+                    if contact in borrowers[i]:
+                        break
+                    i += 1
+                if i == len(borrowers):
+                    error_barcodes.append(barcodes[book_row])
+                else:
+                    borrowers.pop(i)
+                    new_borrowers = "\n".join(borrowers)
+                    books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7,new_borrowers)
+                    book_infos.append(bookLists.get_big_book_info(book_row))
         else:
             barcodes = bookLists.get_books_barcodes()
             for borrowed_barcode in borrowed_barcodes:
@@ -89,9 +100,20 @@ class BorrowForm(webapp2.RequestHandler):
                     error_stickers.append(borrowed_sticker)
             books = bookLists.get_books()
             for book_row in book_rows:
-                original_borrower = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
-                books.update_cell(book_row + BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
-                book_infos.append(bookLists.get_book_info(book_row))
+                original_borrowers = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
+                borrowers = original_borrowers.split("\n")
+                i = 0
+                while i < len(borrowers):
+                    if contact in borrowers[i]:
+                        break
+                    i += 1
+                if i == len(borrowers):
+                    error_barcodes.append(barcodes[book_row])
+                else:
+                    borrowers.pop(i)
+                    new_borrowers = "\n".join(borrowers)
+                    books.update_cell(book_row + BOOKS_OFFSET + 1, 7,new_borrowers)
+                    book_infos.append(bookLists.big_book_info(book_row))
 
         template_values = {
             'contact': contact,
@@ -99,5 +121,5 @@ class BorrowForm(webapp2.RequestHandler):
             'errors': error_barcodes
         }
 
-        template = JINJA_ENVIRONMENT.get_template('borrow_completed.html')
+        template = JINJA_ENVIRONMENT.get_template('return_completed.html')
         self.response.write(template.render(template_values))

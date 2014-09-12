@@ -12,6 +12,7 @@ class SearchForm(webapp2.RequestHandler):
         barcode = self.request.get('barcode')
         sticker = self.request.get('sticker')
         book_rows = []
+        big_book_rows = []
         if title != "":
             book_titles = bookLists.get_books_titles()
             i = 0
@@ -19,16 +20,31 @@ class SearchForm(webapp2.RequestHandler):
                 if title.lower() in book_titles[i].lower():
                     book_rows.append(i)
                 i += 1
+            book_titles = bookLists.get_big_books_titles()
+            i = 0
+            while i < len(book_titles):
+                if title.lower() in book_titles[i].lower():
+                    big_book_rows.append(i)
+                i += 1
             search_query = title
         elif barcode != "":
             barcodes = bookLists.get_books_barcodes()
             i = 0
-            while i < len(stickers):
+            while i < len(barcodes):
                 if barcodes[i] != None:
                     split_barcodes_by_comma = barcodes[i].replace(" ", "").split(',')
                     for split_barcode in split_barcodes_by_comma:
                         if split_barcode == barcode:
                             book_rows.append(i)
+                i += 1
+            barcodes = bookLists.get_big_books_barcodes()
+            i = 0
+            while i < len(barcodes):
+                if barcodes[i] != None:
+                    split_barcodes_by_comma = barcodes[i].replace(" ", "").split(',')
+                    for split_barcode in split_barcodes_by_comma:
+                        if split_barcode == barcode:
+                            big_book_rows.append(i)
                 i += 1
             search_query = barcode
         elif sticker != "":
@@ -40,6 +56,15 @@ class SearchForm(webapp2.RequestHandler):
                     for split_sticker in split_stickers_by_comma:
                         if split_sticker.lower() == sticker.lower():
                             book_rows.append(i)
+                i += 1
+            stickers = bookLists.get_big_books_stickers()
+            i = 0
+            while i < len(stickers):
+                if stickers[i] != None:
+                    split_stickers_by_comma = stickers[i].replace(" ", "").split(',')
+                    for split_sticker in split_stickers_by_comma:
+                        if split_sticker.lower() == sticker.lower():
+                            big_book_rows.append(i)
                 i += 1
             search_query = sticker
         else:
@@ -53,10 +78,14 @@ class SearchForm(webapp2.RequestHandler):
         book_infos = []
         for book_row in book_rows:
             book_infos.append(bookLists.get_book_info(book_row))
-        if len(book_infos) > 0:
+        big_book_infos = []
+        for big_book_row in big_book_rows:
+            big_book_infos.append(bookLists.get_big_book_info(big_book_row))
+        if len(book_infos) > 0 or len(big_book_infos) > 0:
             template_values = {
                 'search_query': search_query,
-                'books': book_infos
+                'books': book_infos,
+                'big_books': big_book_infos
             }
             template = JINJA_ENVIRONMENT.get_template('search_completed.html')
         else:
