@@ -113,7 +113,7 @@ class ReturnForm(webapp2.RequestHandler):
                     borrowers.pop(i)
                     new_borrowers = "\n".join(borrowers)
                     books.update_cell(book_row + BOOKS_OFFSET + 1, 7,new_borrowers)
-                    book_infos.append(bookLists.big_book_info(book_row))
+                    book_infos.append(bookLists.big_info(book_row))
 
         template_values = {
             'contact': contact,
