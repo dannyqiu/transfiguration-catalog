@@ -1,5 +1,5 @@
 import os, webapp2, jinja2
-from catalog import JINJA_ENVIRONMENT, bookLists
+from catalog import *
 
 class TestPage(webapp2.RequestHandler):
 
@@ -13,5 +13,4 @@ class TestPage(webapp2.RequestHandler):
             'books': books,
             'big_books': big_books
         }
-        template = JINJA_ENVIRONMENT.get_template('test.html')
-        self.response.write(template.render(template_values))
+        render_template(self, 'test.html', template_values)

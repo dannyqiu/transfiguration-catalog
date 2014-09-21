@@ -15,7 +15,10 @@
     <body> 
         <div class="container">
             <div class="page-header">
-                <img class="text-center" src="/images/logo.png" />
+                <div class="row">
+                    <img class="pull-left" src="/images/logo.png" />
+                    {% if user %}<div class="pull-right"><h5 class="pull-right">Logged in as: {{ user }}</h5><br><a class="btn btn-danger pull-right" href="{{ logout_url }}">Logout</a></div>{% endif %}
+                </div>
                 <h1 id="transfiguration-title">Library Catalog</h1>
             </div>
         {% block body %}{% endblock %}

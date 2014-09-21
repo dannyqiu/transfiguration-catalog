@@ -1,5 +1,5 @@
 import os, webapp2, jinja2, time
-from catalog import JINJA_ENVIRONMENT, bookLists
+from catalog import *
 from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
 
 from google.appengine.api import users
@@ -7,8 +7,7 @@ from google.appengine.api import users
 class ReturnForm(webapp2.RequestHandler):
 
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('return.html')
-        self.response.write(template.render({}))
+        render_template(self, 'return.html')
 
     def post(self):
         user_logged_in = users.get_current_user()
@@ -121,5 +120,4 @@ class ReturnForm(webapp2.RequestHandler):
             'errors': error_barcodes
         }
 
-        template = JINJA_ENVIRONMENT.get_template('return_completed.html')
-        self.response.write(template.render(template_values))
+        render_template(self, 'return_completed.html', template_values)
