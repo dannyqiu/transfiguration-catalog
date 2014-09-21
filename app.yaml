@@ -2,7 +2,7 @@ application: transfiguration-catalog
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: true
+threadsafe: false
 
 skip_files:
 - ^(.*/)?.*\.pyc
@@ -36,6 +36,9 @@ handlers:
 - url: /return
   script: catalog.views.application
   login: required
+- url: /admin.*
+  script: $PYTHON_LIB/google/appengine/ext/admin
+  login: admin
 - url: /.*
   script: catalog.views.application
 
