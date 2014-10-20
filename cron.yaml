@@ -1,5 +1,5 @@
 cron:
 - description: Update cached book lists
   url: /tasks/update
-  schedule: every 5 minutes from 7:30 to 18:30
+  schedule: every 1 minutes from 7:30 to 18:30
   timezone: America/New_York

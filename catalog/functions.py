@@ -4,23 +4,45 @@ from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
 import gspread
 
 class BookLists:
-
     def __init__(self):
-        start = clock()
+        global books
+        global big_books
+        global books_values
+        global big_books_values
+        global updated_book_time
+        global updated_big_book_time
+        books = None
+        books_values = None
+        big_books = None
+        big_books_values = None
+        updated_book_time = "fake"
+        updated_big_book_time = "fake"
+        self.update()
+
+    def login(self):
         gc = gspread.login(email, password)
         spreadsheet = gc.open_by_key('1UCIE9Iy9xOjLQXSGON_1R40QldjjtRTsE5vGotZ0_vw')
-        global books
-        books = spreadsheet.worksheet("Book List")
-        global big_books
-        big_books = spreadsheet.worksheet("Big Book List")
-        self.update()
-        print "Initialized Book Lists in " + str(clock() - start) + " seconds."
+        return spreadsheet
 
     def update(self):
+        start = clock()
+        spreadsheet = self.login()
+        global books
+        global big_books
+        books = spreadsheet.worksheet("Book List")
+        big_books = spreadsheet.worksheet("Big Book List")
+
         global books_values
-        books_values = books.get_all_values()[BOOKS_OFFSET:]
         global big_books_values
-        big_books_values = big_books.get_all_values()[BIG_BOOKS_OFFSET:]
+        global updated_book_time
+        global updated_big_book_time
+        if books.updated != updated_book_time:
+            books_values = books.get_all_values()[BOOKS_OFFSET:]
+            updated_book_time = books.updated
+        if big_books.updated != updated_big_book_time:
+            big_books_values = big_books.get_all_values()[BIG_BOOKS_OFFSET:]
+            updated_big_book_time = books.updated
+        print "Initialized Book Lists in " + str(clock() - start) + " seconds."
 
     def get_books(self):
         return books

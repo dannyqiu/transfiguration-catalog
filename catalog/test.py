@@ -14,3 +14,6 @@ class TestPage(webapp2.RequestHandler):
             'big_books': big_books
         }
         render_template(self, 'test.html', template_values)
+
+        books = bookLists.get_books()
+        print books.updated

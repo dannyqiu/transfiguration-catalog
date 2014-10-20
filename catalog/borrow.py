@@ -1,6 +1,7 @@
-import os, webapp2, jinja2, time
+import os, webapp2, jinja2, time, datetime
 from catalog import *
 from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
+from timezone import UTC, eastern
 
 from google.appengine.api import users
 
@@ -55,7 +56,8 @@ class BorrowForm(webapp2.RequestHandler):
             books = bookLists.get_big_books()
             for book_row in book_rows:
                 original_borrower = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
-                books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
+                current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern)
+                books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
                 book_infos.append(bookLists.get_big_book_info(book_row))
         else:
             barcodes = bookLists.get_books_barcodes()
@@ -89,7 +91,8 @@ class BorrowForm(webapp2.RequestHandler):
             books = bookLists.get_books()
             for book_row in book_rows:
                 original_borrower = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
-                books.update_cell(book_row + BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
+                current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern)
+                books.update_cell(book_row + BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
                 book_infos.append(bookLists.get_book_info(book_row))
 
         template_values = {
