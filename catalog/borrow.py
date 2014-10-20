@@ -1,7 +1,7 @@
 import os, webapp2, jinja2, time, datetime
 from catalog import *
 from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
-from timezone import UTC, eastern
+from timezone import UTC, Eastern
 
 from google.appengine.api import users
 
