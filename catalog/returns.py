@@ -11,7 +11,7 @@ class ReturnForm(webapp2.RequestHandler):
 
     def post(self):
         user_logged_in = users.get_current_user()
-        contact = user_logged_in.nickname() + ":" + user_logged_in.email()
+        contact = user_logged_in.email()
         borrowed_barcodes = self.request.get('barcodes')
         borrowed_barcodes = borrowed_barcodes.split('\r\n')
         borrowed_barcodes = filter(lambda b: b != "", borrowed_barcodes) # Take out all empty barcodes
