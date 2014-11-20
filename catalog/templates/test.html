@@ -7,9 +7,9 @@
             <th>Barcode Number</th>
             <th>Title</th>
             <th>Author</th>
-            <th>Quantity</th>
-            <th class="col-md-3">Library Sticker Tag</th>
-            <th>Copies Borrowed</th>
+            <th>Total Number of Copies</th>
+            <th class="col-md-2">List of Library Sticker Tags</th>
+            <th class="col-md-3">Date Borrowed and Borrower of Unspecified Copy</th>
         </tr>
         {% for book_row in books %}
         <tr>
@@ -22,21 +22,23 @@
 </div>
 
 <h3 id="big-books">Big Books<small class="pull-right"><a href="#books">Books <span class="glyphicon glyphicon-arrow-up"></span></a></small></h3>
-<table class="table table-condensed table-striped table-hover table-responsive">
-    <tr>
-        <th>Barcode Number</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Quantity</th>
-        <th>Library Sticker Tag</th>
-        <th>Copies Borrowed</th>
-    </tr>
-    {% for book_row in big_books %}
-    <tr>
-        {% for book_column in book_row %}
-        <td>{{ book_column }}</td>
+<div class="table-responsive">
+    <table class="table table-condensed table-striped table-hover">
+        <tr>
+            <th>Barcode Number</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Total Number of Copies</th>
+            <th class="col-md-2">List of Library Sticker Tags</th>
+            <th class="col-md-3">Date Borrowed and Borrower of Unspecified Copy</th>
+        </tr>
+        {% for book_row in big_books %}
+        <tr>
+            {% for book_column in book_row %}
+            <td>{{ book_column }}</td>
+            {% endfor %}
+        </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+    </table>
+</div>
 {% endblock %}
