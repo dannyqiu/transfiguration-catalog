@@ -1,4 +1,15 @@
+# OS Junk
 .DS_Store
-catalog/credentials.py
-*.pyc
+
+# Text Editor Backup Files
 *.swp
+
+# Python Compiled Files
+*.pyc
+
+# Pip Install Files
+*.so
+*.egg-info/
+*.dist-info/
+
+catalog/credentials.py
