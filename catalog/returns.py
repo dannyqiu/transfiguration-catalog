@@ -54,7 +54,12 @@ class ReturnForm(webapp2.RequestHandler):
                     error_stickers.append(borrowed_sticker)
             books = bookLists.get_big_books()
             for book_row in book_rows:
-                original_borrowers = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
+                while True: # Hack to continue retrying to update cell
+                    try:
+                        original_borrowers = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
+                    except HTTPException:
+                        continue
+                    break
                 borrowers = original_borrowers.split("\n")
                 i = 0
                 while i < len(borrowers):
@@ -66,7 +71,12 @@ class ReturnForm(webapp2.RequestHandler):
                 else:
                     borrowers.pop(i)
                     new_borrowers = "\n".join(borrowers)
-                    books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7,new_borrowers)
+                    while True: # Hack to continue retrying to update cell
+                        try:
+                            books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, new_borrowers)
+                        except HTTPException:
+                            continue
+                        break
                     book_infos.append(bookLists.get_big_book_info(book_row))
         if self.request.get('book_type') == "Audio Book":
             barcodes = bookLists.get_audio_books_barcodes()
@@ -99,7 +109,12 @@ class ReturnForm(webapp2.RequestHandler):
                     error_stickers.append(borrowed_sticker)
             books = bookLists.get_audio_books()
             for book_row in book_rows:
-                original_borrowers = books.cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7).value
+                while True: # Hack to continue retrying to update cell
+                    try:
+                        original_borrowers = books.cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7).value
+                    except HTTPException:
+                        continue
+                    break
                 borrowers = original_borrowers.split("\n")
                 i = 0
                 while i < len(borrowers):
@@ -111,7 +126,12 @@ class ReturnForm(webapp2.RequestHandler):
                 else:
                     borrowers.pop(i)
                     new_borrowers = "\n".join(borrowers)
-                    books.update_cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7,new_borrowers)
+                    while True: # Hack to continue retrying to update cell
+                        try:
+                            books.update_cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7, new_borrowers)
+                        except HTTPException:
+                            continue
+                        break
                     book_infos.append(bookLists.get_audio_book_info(book_row))
         else:
             barcodes = bookLists.get_books_barcodes()
@@ -144,7 +164,12 @@ class ReturnForm(webapp2.RequestHandler):
                     error_stickers.append(borrowed_sticker)
             books = bookLists.get_books()
             for book_row in book_rows:
-                original_borrowers = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
+                while True: # Hack to continue retrying to update cell
+                    try:
+                        original_borrowers = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
+                    except HTTPException:
+                        continue
+                    break
                 borrowers = original_borrowers.split("\n")
                 i = 0
                 while i < len(borrowers):
@@ -156,7 +181,12 @@ class ReturnForm(webapp2.RequestHandler):
                 else:
                     borrowers.pop(i)
                     new_borrowers = "\n".join(borrowers)
-                    books.update_cell(book_row + BOOKS_OFFSET + 1, 7,new_borrowers)
+                    while True: # Hack to continue retrying to update cell
+                        try:
+                            books.update_cell(book_row + BOOKS_OFFSET + 1, 7, new_borrowers)
+                        except HTTPException:
+                            continue
+                        break
                     book_infos.append(bookLists.get_book_info(book_row))
 
         template_values = {
