@@ -15,20 +15,20 @@ libraries:
 
 handlers:
 - url: /favicon\.ico
-  static_files: catalog/static/favicon.ico
-  upload: catalog/static/favicon\.ico
+  static_files: static/favicon.ico
+  upload: static/favicon\.ico
   expiration: 30d
 - url: /images
-  static_dir: catalog/static/images
+  static_dir: static/images
   expiration: 14d
 - url: /css
-  static_dir: catalog/static/css
+  static_dir: static/css
   expiration: 7d
 - url: /js
-  static_dir: catalog/static/js
+  static_dir: static/js
   expiration: 7d
 - url: /fonts
-  static_dir: catalog/static/fonts
+  static_dir: static/fonts
   expiration: 7d
 - url: /borrow
   script: catalog.views.application
