@@ -22,14 +22,18 @@
     </table>
 </div>
 
+{% if barcode_errors|length != 0 %}
 <h4 class="text-danger">These barcodes failed to process:</h4>
 {% for error in barcode_errors %}
 {{error}}<br>
 {% endfor %}
+{% endif %}
 
+{% if sticker_errors|length != 0 %}
 <h4 class="text-danger">These sticker tags failed to process:</h4>
 {% for error in sticker_errors %}
 {{error}}<br>
 {% endfor %}
+{% endif %}
 
 {% endblock %}

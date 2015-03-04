@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 <h3>Your search results: <small>{{ search_query }}</small></h3>
+
+{% if books|length != 0 %}
 <h4>Books</h4>
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -24,6 +26,9 @@
     {% endfor %}
     </table>
 </div>
+{% endif %}
+
+{% if big_books|length != 0 %}
 <h4>Big Books</h4>
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -47,4 +52,5 @@
     {% endfor %}
     </table>
 </div>
+{% endif %}
 {% endblock %}
