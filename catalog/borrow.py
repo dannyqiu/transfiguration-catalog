@@ -57,14 +57,14 @@ class BorrowForm(BaseHandler):
                 while True: # Hack to continue retrying to update cell
                     try:
                         original_borrower = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern).strftime("%m/%d/%y %I:%M%p")
                 while True: # Hack to continue retrying to update cell
                     try:
                         books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time) + " - " + contact)
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 book_infos.append(bookLists.get_big_book_info(book_row))
@@ -102,14 +102,14 @@ class BorrowForm(BaseHandler):
                 while True: # Hack to continue retrying to update cell
                     try:
                         original_borrower = books.cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7).value
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern).strftime("%m/%d/%y %I:%M%p")
                 while True: # Hack to continue retrying to update cell
                     try:
                         books.update_cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time) + " - " + contact)
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 book_infos.append(bookLists.get_audio_book_info(book_row))
@@ -147,14 +147,14 @@ class BorrowForm(BaseHandler):
                 while True: # Hack to continue retrying to update cell
                     try:
                         original_borrower = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern).strftime("%m/%d/%y %I:%M%p")
                 while True: # Hack to continue retrying to update cell
                     try:
                         books.update_cell(book_row + BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time) + " - " + contact)
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 book_infos.append(bookLists.get_book_info(book_row))

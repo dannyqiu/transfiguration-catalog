@@ -55,7 +55,7 @@ class ReturnForm(BaseHandler):
                 while True: # Hack to continue retrying to update cell
                     try:
                         original_borrowers = books.cell(book_row + BIG_BOOKS_OFFSET + 1, 7).value
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 borrowers = original_borrowers.split("\n")
@@ -72,7 +72,7 @@ class ReturnForm(BaseHandler):
                     while True: # Hack to continue retrying to update cell
                         try:
                             books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, new_borrowers)
-                        except HTTPException:
+                        except Exception:
                             continue
                         break
                     book_infos.append(bookLists.get_big_book_info(book_row))
@@ -110,7 +110,7 @@ class ReturnForm(BaseHandler):
                 while True: # Hack to continue retrying to update cell
                     try:
                         original_borrowers = books.cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7).value
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 borrowers = original_borrowers.split("\n")
@@ -127,7 +127,7 @@ class ReturnForm(BaseHandler):
                     while True: # Hack to continue retrying to update cell
                         try:
                             books.update_cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7, new_borrowers)
-                        except HTTPException:
+                        except Exception:
                             continue
                         break
                     book_infos.append(bookLists.get_audio_book_info(book_row))
@@ -165,7 +165,7 @@ class ReturnForm(BaseHandler):
                 while True: # Hack to continue retrying to update cell
                     try:
                         original_borrowers = books.cell(book_row + BOOKS_OFFSET + 1, 7).value
-                    except HTTPException:
+                    except Exception:
                         continue
                     break
                 borrowers = original_borrowers.split("\n")
@@ -182,7 +182,7 @@ class ReturnForm(BaseHandler):
                     while True: # Hack to continue retrying to update cell
                         try:
                             books.update_cell(book_row + BOOKS_OFFSET + 1, 7, new_borrowers)
-                        except HTTPException:
+                        except Exception:
                             continue
                         break
                     book_infos.append(bookLists.get_book_info(book_row))

@@ -31,9 +31,9 @@ class BookLists:
         big_books_values = None
         audio_books = None
         audio_books_values = None
-        updated_book_time = "fake"
-        updated_big_book_time = "fake"
-        updated_audio_book_time = "fake"
+        updated_book_time = "Not Initialized"
+        updated_big_book_time = "Not Initialized"
+        updated_audio_book_time = "Not Initialized"
         self.update()
 
     def login(self):
@@ -50,19 +50,19 @@ class BookLists:
         while True: # Hack to continue retrying to update cell
             try:
                 books = spreadsheet.worksheet("Book List")
-            except HTTPException:
+            except Exception:
                 continue
             break
         while True: # Hack to continue retrying to update cell
             try:
                 big_books = spreadsheet.worksheet("Big Book List")
-            except HTTPException:
+            except Exception:
                 continue
             break
         while True: # Hack to continue retrying to update cell
             try:
                 audio_books = spreadsheet.worksheet("Audiobooks in Ziplock Bags")
-            except HTTPException:
+            except Exception:
                 continue
             break
 
@@ -77,7 +77,7 @@ class BookLists:
             while True: # Hack to continue retrying to update cell
                 try:
                     books_values = books.get_all_values()[BOOKS_OFFSET:]
-                except HTTPException:
+                except Exception:
                     continue
                 break
             books_values = trim_list_end(books_values)
@@ -87,7 +87,7 @@ class BookLists:
             while True: # Hack to continue retrying to update cell
                 try:
                     big_books_values = big_books.get_all_values()[BIG_BOOKS_OFFSET:]
-                except HTTPException:
+                except Exception:
                     continue
                 break
             big_books_values = trim_list_end(big_books_values)
@@ -97,7 +97,7 @@ class BookLists:
             while True: # Hack to continue retrying to update cell
                 try:
                     audio_books_values = audio_books.get_all_values()[AUDIO_BOOKS_OFFSET:]
-                except HTTPException:
+                except Exception:
                     continue
                 break
             audio_books_values = trim_list_end(audio_books_values)

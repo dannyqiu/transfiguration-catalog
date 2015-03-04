@@ -1,7 +1,7 @@
 import os, webapp2, jinja2
 from google.appengine.api import users
 from constants import *
-from functions import BookLists
+from functions import *
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
