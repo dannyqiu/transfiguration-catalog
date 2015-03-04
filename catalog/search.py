@@ -12,6 +12,7 @@ class SearchForm(webapp2.RequestHandler):
         sticker = self.request.get('sticker')
         book_rows = []
         big_book_rows = []
+        audio_book_rows = []
         if title != "":
             book_titles = bookLists.get_books_titles()
             i = 0
@@ -24,6 +25,12 @@ class SearchForm(webapp2.RequestHandler):
             while i < len(book_titles):
                 if title.lower() in book_titles[i].lower():
                     big_book_rows.append(i)
+                i += 1
+            book_titles = bookLists.get_audio_books_titles()
+            i = 0
+            while i < len(book_titles):
+                if title.lower() in book_titles[i].lower():
+                    audio_book_rows.append(i)
                 i += 1
             search_query = title
         elif barcode != "":
@@ -45,6 +52,15 @@ class SearchForm(webapp2.RequestHandler):
                         if split_barcode == barcode:
                             big_book_rows.append(i)
                 i += 1
+            barcodes = bookLists.get_audio_books_barcodes()
+            i = 0
+            while i < len(barcodes):
+                if barcodes[i] != None:
+                    split_barcodes_by_comma = barcodes[i].replace(" ", "").split(',')
+                    for split_barcode in split_barcodes_by_comma:
+                        if split_barcode == barcode:
+                            audio_book_rows.append(i)
+                i += 1
             search_query = barcode
         elif sticker != "":
             stickers = bookLists.get_books_stickers()
@@ -65,6 +81,15 @@ class SearchForm(webapp2.RequestHandler):
                         if split_sticker.lower() == sticker.lower():
                             big_book_rows.append(i)
                 i += 1
+            stickers = bookLists.get_audio_books_stickers()
+            i = 0
+            while i < len(stickers):
+                if stickers[i] != None:
+                    split_stickers_by_comma = stickers[i].replace(" ", "").split(',')
+                    for split_sticker in split_stickers_by_comma:
+                        if split_sticker.lower() == sticker.lower():
+                            audio_book_rows.append(i)
+                i += 1
             search_query = sticker
         else:
             template_values = {
@@ -79,11 +104,15 @@ class SearchForm(webapp2.RequestHandler):
         big_book_infos = []
         for big_book_row in big_book_rows:
             big_book_infos.append(bookLists.get_big_book_info(big_book_row))
-        if len(book_infos) > 0 or len(big_book_infos) > 0:
+        audio_book_infos =[]
+        for audio_book_row in audio_book_rows:
+            audio_book_infos.append(bookLists.get_audio_book_info(audio_book_row))
+        if len(book_infos) + len(big_book_infos) + len(audio_book_infos) > 0:
             template_values = {
                 'search_query': search_query,
                 'books': book_infos,
-                'big_books': big_book_infos
+                'big_books': big_book_infos,
+                'audio_books': audio_book_infos
             }
             render_template(self, 'search_completed.html', template_values)
         else:

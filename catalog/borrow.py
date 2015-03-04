@@ -1,6 +1,6 @@
 import os, webapp2, jinja2, time, datetime
 from catalog import *
-from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
+from constants import *
 from timezone import UTC, Eastern
 
 from google.appengine.api import users
@@ -59,6 +59,41 @@ class BorrowForm(webapp2.RequestHandler):
                 current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern)
                 books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
                 book_infos.append(bookLists.get_big_book_info(book_row))
+        if self.request.get('book_type') == "Audio Book":
+            barcodes = bookLists.get_audio_books_barcodes()
+            for borrowed_barcode in borrowed_barcodes:
+                i = 0
+                book_found = False
+                while i < len(barcodes) and book_found == False:
+                    split_barcodes_by_comma = barcodes[i].split(',')
+                    for split_barcode in split_barcodes_by_comma:
+                        if borrowed_barcode in split_barcode:
+                            book_rows.append(i)
+                            book_found = True
+                            break
+                    i += 1
+                if not book_found:
+                    error_barcodes.append(borrowed_barcode)
+            stickers = bookLists.get_audio_books_stickers()
+            for borrowed_sticker in borrowed_stickers:
+                i = 0
+                book_found = False
+                while i < len(stickers) and book_found == False:
+                    split_stickers_by_comma = stickers[i].split(',')
+                    for split_sticker in split_stickers_by_comma:
+                        if borrowed_sticker in split_sticker:
+                            book_rows.append(i)
+                            book_found = True
+                            break
+                    i += 1
+                if not book_found:
+                    error_stickers.append(borrowed_sticker)
+            books = bookLists.get_audio_books()
+            for book_row in book_rows:
+                original_borrower = books.cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7).value
+                current_time = datetime.datetime.now().replace(tzinfo=UTC()).astimezone(Eastern)
+                books.update_cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7, original_borrower + "\n" + str(current_time.strftime("%m/%d/%y %I:%M%p")) + " - " + contact)
+                book_infos.append(bookLists.get_audio_book_info(book_row))
         else:
             barcodes = bookLists.get_books_barcodes()
             for borrowed_barcode in borrowed_barcodes:

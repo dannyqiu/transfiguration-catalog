@@ -1,6 +1,6 @@
 import os, webapp2, jinja2, time
 from catalog import *
-from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
+from constants import *
 
 from google.appengine.api import users
 
@@ -68,6 +68,51 @@ class ReturnForm(webapp2.RequestHandler):
                     new_borrowers = "\n".join(borrowers)
                     books.update_cell(book_row + BIG_BOOKS_OFFSET + 1, 7,new_borrowers)
                     book_infos.append(bookLists.get_big_book_info(book_row))
+        if self.request.get('book_type') == "Audio Book":
+            barcodes = bookLists.get_audio_books_barcodes()
+            for borrowed_barcode in borrowed_barcodes:
+                i = 0
+                book_found = False
+                while i < len(barcodes) and book_found == False:
+                    split_barcodes_by_comma = barcodes[i].split(',')
+                    for split_barcode in split_barcodes_by_comma:
+                        if borrowed_barcode in split_barcode:
+                            book_rows.append(i)
+                            book_found = True
+                            break
+                    i += 1
+                if not book_found:
+                    error_barcodes.append(borrowed_barcode)
+            stickers = bookLists.get_audio_books_stickers()
+            for borrowed_sticker in borrowed_stickers:
+                i = 0
+                book_found = False
+                while i < len(stickers) and book_found == False:
+                    split_stickers_by_comma = stickers[i].split(',')
+                    for split_sticker in split_stickers_by_comma:
+                        if borrowed_sticker in split_sticker:
+                            book_rows.append(i)
+                            book_found = True
+                            break
+                    i += 1
+                if not book_found:
+                    error_stickers.append(borrowed_sticker)
+            books = bookLists.get_audio_books()
+            for book_row in book_rows:
+                original_borrowers = books.cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7).value
+                borrowers = original_borrowers.split("\n")
+                i = 0
+                while i < len(borrowers):
+                    if contact in borrowers[i]:
+                        break
+                    i += 1
+                if i == len(borrowers):
+                    error_barcodes.append(barcodes[book_row])
+                else:
+                    borrowers.pop(i)
+                    new_borrowers = "\n".join(borrowers)
+                    books.update_cell(book_row + AUDIO_BOOKS_OFFSET + 1, 7,new_borrowers)
+                    book_infos.append(bookLists.get_audio_book_info(book_row))
         else:
             barcodes = bookLists.get_books_barcodes()
             for borrowed_barcode in borrowed_barcodes:

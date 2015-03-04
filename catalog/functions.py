@@ -1,7 +1,7 @@
 import logging
 from time import time, clock
 from credentials import email, password
-from constants import BOOKS_OFFSET, BIG_BOOKS_OFFSET
+from constants import *
 import gspread
 
 def trim_list_end(book_list):
@@ -18,16 +18,22 @@ class BookLists:
     def __init__(self):
         global books
         global big_books
+        global audio_books
         global books_values
         global big_books_values
+        global audo_books_values
         global updated_book_time
         global updated_big_book_time
+        global updated_audio_book_time
         books = None
         books_values = None
         big_books = None
         big_books_values = None
+        audio_books = None
+        audio_books_values = None
         updated_book_time = "fake"
         updated_big_book_time = "fake"
+        updated_audio_book_time = "fake"
         self.update()
 
     def login(self):
@@ -40,13 +46,17 @@ class BookLists:
         spreadsheet = self.login()
         global books
         global big_books
+        global audio_books
         books = spreadsheet.worksheet("Book List")
         big_books = spreadsheet.worksheet("Big Book List")
+        audio_books = spreadsheet.worksheet("Audiobooks in Ziplock Bags")
 
         global books_values
         global big_books_values
+        global audio_books_values
         global updated_book_time
         global updated_big_book_time
+        global updated_audio_book_time
         if books.updated != updated_book_time:
             logging.info("Books update time: " + updated_book_time)
             books_values = books.get_all_values()[BOOKS_OFFSET:]
@@ -57,6 +67,11 @@ class BookLists:
             big_books_values = big_books.get_all_values()[BIG_BOOKS_OFFSET:]
             big_books_values = trim_list_end(big_books_values)
             updated_big_book_time = big_books.updated
+        if audio_books.updated != updated_audio_book_time:
+            logging.info("Audio books update time: " + updated_audio_book_time)
+            audio_books_values = audio_books.get_all_values()[AUDIO_BOOKS_OFFSET:]
+            audio_books_values = trim_list_end(audio_books_values)
+            updated_audio_book_time = audio_books.updated
         logging.info("Initialized Book Lists in " + str(clock() - start) + " seconds.")
 
     def get_books(self):
@@ -112,3 +127,30 @@ class BookLists:
 
     def get_big_book_info(self, book_row):
         return big_books_values[book_row]
+
+    def get_audio_books(self):
+        return audio_books
+
+    def get_audio_books_values(self):
+        return audio_books_values
+
+    def get_audio_books_barcodes(self):
+        barcodes = []
+        for row in audio_books_values:
+            barcodes.append(row[0])
+        return barcodes
+
+    def get_audio_books_titles(self):
+        titles = []
+        for row in audio_books_values:
+            titles.append(row[1])
+        return titles
+
+    def get_audio_books_stickers(self):
+        stickers = []
+        for row in audio_books_values:
+            stickers.append(row[4])
+        return stickers
+
+    def get_audio_book_info(self, book_row):
+        return audio_books_values[book_row]

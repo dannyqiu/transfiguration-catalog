@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
-<h3 id="books">Books<small class="pull-right"><a href="#big-books">Big Books <span class="glyphicon glyphicon-arrow-down"></span></a></small></h3>
+<h3 id="books">Books
+    <small class="pull-right">
+        <a href="#big-books">Big Books <span class="glyphicon glyphicon-arrow-down"></span></a>
+        <a href="#audio-books">Audio Books <span class="glyphicon glyphicon-arrow-down"></span></a>
+    </small>
+</h3>
 <div class="table-responsive">
     <table class="table table-condensed table-striped table-hover">
         <tr>
@@ -21,7 +26,12 @@
     </table>
 </div>
 
-<h3 id="big-books">Big Books<small class="pull-right"><a href="#books">Books <span class="glyphicon glyphicon-arrow-up"></span></a></small></h3>
+<h3 id="big-books">Big Books
+    <small class="pull-right">
+        <a href="#audio-books">Audio Books <span class="glyphicon glyphicon-arrow-down"></span></a>
+        <a href="#books">Books <span class="glyphicon glyphicon-arrow-up"></span></a>
+    </small>
+</h3>
 <div class="table-responsive">
     <table class="table table-condensed table-striped table-hover">
         <tr>
@@ -41,4 +51,38 @@
         {% endfor %}
     </table>
 </div>
+
+<h3 id="audio-books">Audio Books
+    <small class="pull-right">
+        <a href="#books">Books <span class="glyphicon glyphicon-arrow-up"></span></a>
+        <a href="#big-books">Big Books <span class="glyphicon glyphicon-arrow-up"></span></a>
+    </small>
+</h3>
+
+<div class="table-responsive">
+    <table class="table table-condensed table-striped table-hover">
+        <tr>
+            <th>Barcode Number</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Total Number of Copies</th>
+            <th class="col-md-2">List of Library Sticker Tags</th>
+            <th class="col-md-3">Date Borrowed and Borrower of Unspecified Copy</th>
+        </tr>
+        {% for book_row in audio_books %}
+        <tr>
+            {% for book_column in book_row %}
+            <td>{{ book_column }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h5 class="text-right">
+    <a href="#books">Books <span class="glyphicon glyphicon-arrow-up"></span></a>
+    <a href="#big-books">Big Books <span class="glyphicon glyphicon-arrow-up"></span></a>
+    <a href="#audio-books">Audio Books <span class="glyphicon glyphicon-arrow-up"></span></a>
+</h5>
+
 {% endblock %}
