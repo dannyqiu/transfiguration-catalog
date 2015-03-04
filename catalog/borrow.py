@@ -1,14 +1,13 @@
-import os, webapp2, jinja2, time, datetime
+import time, datetime
+from google.appengine.api import users
 from catalog import *
 from constants import *
 from timezone import UTC, Eastern
 
-from google.appengine.api import users
-
-class BorrowForm(webapp2.RequestHandler):
+class BorrowForm(BaseHandler):
 
     def get(self):
-        render_template(self, 'borrow.html')
+        self.render_template('borrow.html')
 
     def post(self):
         user_logged_in = users.get_current_user()
@@ -166,4 +165,4 @@ class BorrowForm(webapp2.RequestHandler):
             'errors': error_barcodes
         }
 
-        render_template(self, 'borrow_completed.html', template_values)
+        self.render_template('borrow_completed.html', template_values)

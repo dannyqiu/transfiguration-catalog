@@ -1,10 +1,10 @@
 import os, webapp2, jinja2
 from catalog import *
 
-class SearchForm(webapp2.RequestHandler):
+class SearchForm(BaseHandler):
 
     def get(self):
-        render_template(self, 'search.html')
+        self.render_template('search.html')
 
     def post(self):
         title = self.request.get('title')
@@ -95,7 +95,7 @@ class SearchForm(webapp2.RequestHandler):
             template_values = {
                 'error_message': "Nothing to search for!"
             }
-            render_template(self, 'search_error.html', template_values)
+            self.render_template('search_error.html', template_values)
             return
 
         book_infos = []
@@ -114,7 +114,7 @@ class SearchForm(webapp2.RequestHandler):
                 'big_books': big_book_infos,
                 'audio_books': audio_book_infos
             }
-            render_template(self, 'search_completed.html', template_values)
+            self.render_template('search_completed.html', template_values)
         else:
             if title != "":
                 error_message = "Title of <strong>" + title + "</strong> could not be found!"
@@ -125,4 +125,4 @@ class SearchForm(webapp2.RequestHandler):
             template_values = {
                 'error_message': error_message
             }
-            render_template(self, 'search_error.html', template_values)
+            self.render_template('search_error.html', template_values)

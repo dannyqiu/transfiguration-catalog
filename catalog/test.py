@@ -1,7 +1,7 @@
-import os, webapp2, jinja2
+import logging
 from catalog import *
 
-class TestPage(webapp2.RequestHandler):
+class TestPage(BaseHandler):
 
     def get(self):
         books = bookLists.get_books_values()
@@ -16,7 +16,7 @@ class TestPage(webapp2.RequestHandler):
             'big_books': big_books,
             'audio_books': audio_books
         }
-        render_template(self, 'test.html', template_values)
+        self.render_template('test.html', template_values)
 
         books = bookLists.get_books()
-        print books.updated
+        logging.info(books.updated)

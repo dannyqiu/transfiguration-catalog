@@ -1,8 +1,8 @@
 import logging
 from time import time, clock
+import gspread
 from credentials import email, password
 from constants import *
-import gspread
 
 def trim_list_end(book_list):
     i = len(book_list)

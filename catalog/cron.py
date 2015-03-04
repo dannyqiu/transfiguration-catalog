@@ -1,5 +1,5 @@
-import os, webapp2, jinja2
-from catalog import JINJA_ENVIRONMENT, bookLists
+import webapp2, jinja2
+from catalog import *
 
 class UpdateBookLists(webapp2.RequestHandler):
 

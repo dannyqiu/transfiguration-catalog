@@ -1,13 +1,11 @@
-import os, webapp2, jinja2, time
+from google.appengine.api import users
 from catalog import *
 from constants import *
 
-from google.appengine.api import users
-
-class ReturnForm(webapp2.RequestHandler):
+class ReturnForm(BaseHandler):
 
     def get(self):
-        render_template(self, 'return.html')
+        self.render_template('return.html')
 
     def post(self):
         user_logged_in = users.get_current_user()
@@ -195,4 +193,4 @@ class ReturnForm(webapp2.RequestHandler):
             'errors': error_barcodes
         }
 
-        render_template(self, 'return_completed.html', template_values)
+        self.render_template('return_completed.html', template_values)
