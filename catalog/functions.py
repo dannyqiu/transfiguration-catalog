@@ -47,9 +47,24 @@ class BookLists:
         global books
         global big_books
         global audio_books
-        books = spreadsheet.worksheet("Book List")
-        big_books = spreadsheet.worksheet("Big Book List")
-        audio_books = spreadsheet.worksheet("Audiobooks in Ziplock Bags")
+        while True: # Hack to continue retrying to update cell
+            try:
+                books = spreadsheet.worksheet("Book List")
+            except HTTPException:
+                continue
+            break
+        while True: # Hack to continue retrying to update cell
+            try:
+                big_books = spreadsheet.worksheet("Big Book List")
+            except HTTPException:
+                continue
+            break
+        while True: # Hack to continue retrying to update cell
+            try:
+                audio_books = spreadsheet.worksheet("Audiobooks in Ziplock Bags")
+            except HTTPException:
+                continue
+            break
 
         global books_values
         global big_books_values
@@ -59,17 +74,32 @@ class BookLists:
         global updated_audio_book_time
         if books.updated != updated_book_time:
             logging.info("Books update time: " + updated_book_time)
-            books_values = books.get_all_values()[BOOKS_OFFSET:]
+            while True: # Hack to continue retrying to update cell
+                try:
+                    books_values = books.get_all_values()[BOOKS_OFFSET:]
+                except HTTPException:
+                    continue
+                break
             books_values = trim_list_end(books_values)
             updated_book_time = books.updated
         if big_books.updated != updated_big_book_time:
             logging.info("Big books update time: " + updated_big_book_time)
-            big_books_values = big_books.get_all_values()[BIG_BOOKS_OFFSET:]
+            while True: # Hack to continue retrying to update cell
+                try:
+                    big_books_values = big_books.get_all_values()[BIG_BOOKS_OFFSET:]
+                except HTTPException:
+                    continue
+                break
             big_books_values = trim_list_end(big_books_values)
             updated_big_book_time = big_books.updated
         if audio_books.updated != updated_audio_book_time:
             logging.info("Audio books update time: " + updated_audio_book_time)
-            audio_books_values = audio_books.get_all_values()[AUDIO_BOOKS_OFFSET:]
+            while True: # Hack to continue retrying to update cell
+                try:
+                    audio_books_values = audio_books.get_all_values()[AUDIO_BOOKS_OFFSET:]
+                except HTTPException:
+                    continue
+                break
             audio_books_values = trim_list_end(audio_books_values)
             updated_audio_book_time = audio_books.updated
         logging.info("Initialized Book Lists in " + str(clock() - start) + " seconds.")
