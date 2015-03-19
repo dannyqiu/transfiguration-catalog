@@ -1,23 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
 <form role="form" action="/return" method="post">
+    {% if error %}
+    <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
     <div class="form-group">
         <label for="book_type">Book Type</label>
         <div class="radio">
             <label>
-                <input type="radio" name="book_type" id="regular-book" value="Regular Book">
+                <input type="radio" name="book_type" id="regular-book" value="Regular Book" required>
                 Regular Book
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" name="book_type" id="big-book" value="Big Book">
+                <input type="radio" name="book_type" id="big-book" value="Big Book" required>
                 Big Book
             </label>
         </div>
         <div class="radio">
             <label>
-                <input type="radio" name="book_type" id="audio-book" value="Audio Book">
+                <input type="radio" name="book_type" id="audio-book" value="Audio Book" required>
                 Audio Book
             </label>
         </div>
@@ -25,12 +28,12 @@
     <div class="form-group">
         <label for="barcodes">Barcode Number(s)</label>
         <small>Go to the next line after each barcode number</small>
-        <textarea class="form-control" id="barcodes" name="barcodes" placeholder="Scan/Enter the Barcode(s)" style="height: 200px;"></textarea>
+        <textarea class="form-control" id="barcodes" name="barcodes" placeholder="Scan/Enter the Barcode(s)" style="height: 200px;">{{ barcodes }}</textarea>
     </div>
     <div class="form-group">
         <label for="stickers">Sticker Tags</label>
         <small>Go to the next line after each sticker tag</small>
-        <textarea class="form-control" id="stickers" name="stickers" placeholder="Enter the Sticker Tag(s)" style="height: 200px;"></textarea>
+        <textarea class="form-control" id="stickers" name="stickers" placeholder="Enter the Sticker Tag(s)" style="height: 200px;">{{ stickers }}</textarea>
     </div>
     <button type="submit" class="btn btn-default">Return!</button>
 </form>
