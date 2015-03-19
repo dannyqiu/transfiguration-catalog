@@ -1,4 +1,4 @@
-import time, datetime
+import time, datetime, logging
 from google.appengine.api import users
 from catalog import *
 from constants import *
@@ -170,6 +170,11 @@ class BorrowForm(BaseHandler):
             }
             self.render_template('borrow.html', template_values)
             return
+
+        logging.debug(borrowed_barcodes)
+        logging.debug(error_barcodes)
+        logging.debug(borrowed_stickers)
+        logging.debug(error_stickers)
 
         template_values = {
             'contact': contact,

@@ -1,4 +1,4 @@
-import os, webapp2, jinja2
+import logging
 from catalog import *
 
 class SearchForm(BaseHandler):
@@ -33,6 +33,7 @@ class SearchForm(BaseHandler):
                     audio_book_rows.append(i)
                 i += 1
             search_query = title
+            logging.debug(title)
         elif barcode != "":
             barcodes = bookLists.get_books_barcodes()
             i = 0
@@ -62,6 +63,7 @@ class SearchForm(BaseHandler):
                             audio_book_rows.append(i)
                 i += 1
             search_query = barcode
+            logging.debug(barcode)
         elif sticker != "":
             stickers = bookLists.get_books_stickers()
             i = 0
@@ -91,6 +93,7 @@ class SearchForm(BaseHandler):
                             audio_book_rows.append(i)
                 i += 1
             search_query = sticker
+            logging.debug(sticker)
         else:
             template_values = {
                 'error_message': "Nothing to search for!"
