@@ -202,7 +202,8 @@ class ReturnForm(BaseHandler):
         template_values = {
             'contact': contact,
             'books': book_infos,
-            'errors': error_barcodes
+            'barcode_errors': error_barcodes,
+            'sticker_errors': error_stickers
         }
 
         self.render_template('return_completed.html', template_values)
