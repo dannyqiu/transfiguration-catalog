@@ -7,9 +7,9 @@ class SearchForm(BaseHandler):
         self.render_template('search.html')
 
     def post(self):
-        title = self.request.get('title')
-        barcode = self.request.get('barcode')
-        sticker = self.request.get('sticker')
+        title = self.request.get('title').strip()
+        barcode = self.request.get('barcode').strip()
+        sticker = self.request.get('sticker').strip()
         book_rows = []
         big_book_rows = []
         audio_book_rows = []
