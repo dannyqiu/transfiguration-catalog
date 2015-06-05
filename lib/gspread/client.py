@@ -9,15 +9,12 @@ Google Data API.
 
 """
 import re
-
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
+import warnings
 
 from xml.etree import ElementTree
 
 from . import __version__
+from . import urlencode
 from .ns import _ns
 from .httpsession import HTTPSession, HTTPError
 from .models import Spreadsheet
@@ -46,11 +43,11 @@ class Client(object):
                                     Defaults to :class:`~gspread.httpsession.HTTPSession`.
 
     >>> c = gspread.Client(auth=('user@example.com', 'qwertypassword'))
-    
+
     or
-    
+
     >>> c = gspread.Client(auth=OAuthCredentialObject)
-    
+
 
     """
     def __init__(self, auth, http_session=None):
@@ -62,6 +59,18 @@ class Client(object):
             if line.startswith('Auth='):
                 return line[5:]
         return None
+
+    def _deprecation_warning(self):
+        warnings.warn("""
+            ClientLogin is deprecated:
+            https://developers.google.com/identity/protocols/AuthForInstalledApps?csw=1
+
+            Authorization with email and password will stop working on April 20, 2015.
+
+            Please use oAuth2 authorization instead:
+            http://gspread.readthedocs.org/en/latest/oauth2.html
+
+        """, Warning)
 
     def _add_xml_header(self, data):
         return "<?xml version='1.0' encoding='UTF-8'?>%s" % data.decode()
@@ -81,42 +90,39 @@ class Client(object):
         service = 'wise'
 
         if hasattr(self.auth, 'access_token'):
-            if not self.auth.access_token:
+            if not self.auth.access_token or \
+                    (hasattr(self.auth, 'access_token_expired') and self.auth.access_token_expired):
                 import httplib2
-                
+
                 http = httplib2.Http()
                 self.auth.refresh(http)
-                
+
             self.session.add_header('Authorization', "Bearer " + self.auth.access_token)
-            
+
         else:
+            self._deprecation_warning()
+
             data = {'Email': self.auth[0],
                     'Passwd': self.auth[1],
                     'accountType': 'HOSTED_OR_GOOGLE',
                     'service': service,
                     'source': source}
-    
+
             url = AUTH_SERVER + '/accounts/ClientLogin'
-    
+
             try:
                 r = self.session.post(url, data)
                 content = r.read().decode()
                 token = self._get_auth_token(content)
                 auth_header = "GoogleLogin auth=%s" % token
                 self.session.add_header('Authorization', auth_header)
-    
+
             except HTTPError as ex:
-                if ex.code == 403:
-                    content = ex.read().decode()
-                    if content.strip() == 'Error=BadAuthentication':
-                        raise AuthenticationError("Incorrect username or password")
-                    else:
-                        raise AuthenticationError(
-                            "Unable to authenticate. %s code" % ex.code)
-    
+                if ex.message.strip() == '403: Error=BadAuthentication':
+                    raise AuthenticationError("Incorrect username or password")
                 else:
                     raise AuthenticationError(
-                        "Unable to authenticate. %s code" % ex.code)
+                        "Unable to authenticate. %s" % ex.message)
 
     def open(self, title):
         """Opens a spreadsheet, returning a :class:`~gspread.Spreadsheet` instance.
@@ -251,7 +257,11 @@ class Client(object):
     def del_worksheet(self, worksheet):
         url = construct_url(
             'worksheet', worksheet, 'private', 'full', worksheet_version=worksheet.version)
-        self.session.delete(url)
+        r = self.session.delete(url)
+        # Even though there is nothing interesting in the response body
+        # we have to read it or the next request from this session will get a
+        # httplib.ResponseNotReady error.
+        r.read()
 
     def get_cells_cell_id_feed(self, worksheet, cell_id,
                                visibility='private', projection='full'):
@@ -311,7 +321,7 @@ def login(email, password):
     client = Client(auth=(email, password))
     client.login()
     return client
-    
+
 def authorize(credentials):
     """Login to Google API using OAuth2 credentials.
 
@@ -324,4 +334,4 @@ def authorize(credentials):
     client = Client(auth=credentials)
     client.login()
     return client
-    
+
