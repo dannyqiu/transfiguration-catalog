@@ -12,4 +12,4 @@
 *.egg-info/
 *.dist-info/
 
-catalog/credentials.py
+client_secrets.json

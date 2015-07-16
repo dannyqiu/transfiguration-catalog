@@ -1,8 +1,7 @@
-import logging, json
+import sys, os, logging, json
 from time import time, clock
 import gspread
-from oauth2client.client import SignedJwtAssertionCredentials
-from credentials import oauth_object
+from oauth2client.client import GoogleCredentials
 from constants import *
 
 def trim_list_end(book_list):
@@ -38,11 +37,12 @@ class BookLists:
         self.update()
 
     def login(self):
+        logging.info("Logging in with credentials located at " + os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
         scope = ['https://spreadsheets.google.com/feeds']
-        json_key = json.loads(oauth_object)
-        credentials = SignedJwtAssertionCredentials(json_key['client_email'], json_key['private_key'], scope)
-        gc = gspread.authorize(credentials)
-        spreadsheet = gc.open_by_key(SPREADSHEET_KEY)
+        credentials = GoogleCredentials.get_application_default()
+        credentials = credentials.create_scoped(scope)
+        gs = gspread.authorize(credentials)
+        spreadsheet = gs.open_by_key(SPREADSHEET_KEY)
         return spreadsheet
 
     def update(self):
