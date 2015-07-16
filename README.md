@@ -16,11 +16,10 @@ The library originally used a old system of recording all books on an Excel spre
 ## Setup
 
 1. Install dependencies using pip: `pip install -r requirements.txt -t lib`
-2. Create a copy of `credentials.pi` to `credentials.py` and fill with appropriate credentials
+2. Download credentials for a service account and move the json data to the root of this repository. Rename it to `client_secrets.json`
 3. Deploy to Google App Engine
 
 ## Requirements
 
-- Google App Engine
-    - User Authentication
+- [oauth2client](https://github.com/google/oauth2client)
 - [gspread](https://github.com/burnash/gspread)
