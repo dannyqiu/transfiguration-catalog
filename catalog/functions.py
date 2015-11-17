@@ -37,7 +37,11 @@ class BookLists:
         self.update()
 
     def login(self):
-        logging.info("Logging in with credentials located at " + os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
+        if os.environ.has_key('GOOGLE_APPLICATION_CREDENTIALS'):
+            logging.info("Logging in with credentials located at " + os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
+        else:
+            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join(os.path.dirname(__file__), '..', 'client_secrets.json')
+            logging.info("Google is bugging out! We have to set the GOOGLE_APPLICATION_CREDENTIALS environment variable again... " + os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
         scope = ['https://spreadsheets.google.com/feeds']
         credentials = GoogleCredentials.get_application_default()
         credentials = credentials.create_scoped(scope)
